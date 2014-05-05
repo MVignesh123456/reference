@@ -1,0 +1,71 @@
+<html>
+<head>
+<title>Editable Table</title>
+<script type="text/javascript">
+/* this is what you need to change */
+var tableTitles = ["Data Field 1","Something Else","Third Data"];
+
+var rowEditing = undefined;
+var editWindow = undefined;
+function editRow(e){
+if (rowEditing) { // only one row at a time
+if (editWindow && !editWindow.closed) {return false;}
+else {
+rowEditing = undefined;
+editWindow=undefined;
+}
+}
+e = e || window.event; // IE sucks
+var tgt = e.target || e.srcElement; // IE sucks
+while (tgt && !tgt.cells) {tgt = tgt.parentNode;} // finds tr.
+rowEditing = tgt;
+editWindow = open("javascript:''","editWindow","width=180,heigh t=200");
+writeEditPage(editWindow.document);
+}
+
+function writeEditPage(doc,cells) {
+doc.open();
+doc.write("<html><head><title>Edit Row "+(rowEditing.rowIndex+1)+
+" Values <\/title><\/head>\n");
+doc.write("<body onload='opener.populate(document)'>\n<p>\n");
+for(var i=0;i<tableTitles.length;i++) {
+doc.write("<label for='field"+i+"'>"+tableTitles[i]+
+": <input id='field"+i+"' type='text'><\/label>\n");
+}
+doc.write("<input type='button' onclick='opener.rowCallback(document)'"+
+" value='Ok'>");
+doc.write("<\/p><\/body><\/html>\n");
+doc.close();
+}
+
+function populate(doc) {
+for(var i=0;i<tableTitles.length;i++) {
+doc.getElementById("field"+i).value = rowEditing.cells[i].innerHTML;
+}
+}
+
+function rowCallback(doc){
+if (!rowEditing) {return;} // something is wrong
+for(var i=0;i<tableTitles.length;i++) {
+rowEditing.cells[i].innerHTML = doc.getElementById("field"+i).value;
+}
+rowEditing = undefined;
+editWindow.close();
+}
+</script>
+</head>
+<body>
+<table>
+<!-- table must have three columns when tableTitles have three elements -->
+<thead>
+<tr><td>Data Field 1</td><td>Something Else</td><td>Third Data</td></tr>
+</thead>
+<tbody onclick="editRow(event)">
+<tr><td>Row on</td><td>Hello</td><td>There</td></tr>
+<tr><td>Row too</td><td>Hello</td><td>Again</td></tr>
+<tr><td>Row tree</td><td>Hello</td><td>Larch</td></tr>
+<tr><td>Row for</td><td>Hello</td><td>Peace</td></tr>
+</tbody>
+</table>
+</body>
+</html>

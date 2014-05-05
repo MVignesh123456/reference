@@ -1,0 +1,61 @@
+<html>
+<script type="text/javascript">
+function InsertRow(WhereToInsert) {
+var xtable
+var xrow
+var xcell
+var xelement
+
+xtable = document.getElementById("MyTable")
+xrow = xtable.insertRow(WhereToInsert)
+
+xcell = xrow.insertCell(0)
+xcell.innerHTML = "Inserted Row"
+xcell.setAttribute("bgColor", "#008888")
+
+xcell = xrow.insertCell(1)
+xcell.innerHTML = ""
+xcell.setAttribute("bgColor", "#008888")
+xelement = document.createElement("input")
+xelement.setAttribute("type", "button")
+xelement.setAttribute("style", "width:75")
+xelement.setAttribute("value", "Click")
+xelement.setAttribute("onClick", "alert('Wow, it works!')")
+xcell.appendChild(xelement)
+}
+</script>
+
+<body>
+<form name="MyForm">
+<table id = "MyTable" width = "400" align = "center">
+<tr>
+<td width = "50%" style = "background-color:#00ffff">
+Text Row 1
+</td>
+
+<td width = "50%" style = "background-color:#00ffff">
+<input type = "button" style = "width:75" value = "Click"
+onClick = "alert('Wow, it works!')">
+</td>
+</tr>
+
+<tr>
+<td width = "50%" style = "background-color:#00ffff">
+Text Row 2
+</td>
+
+<td width = "50%" style = "background-color:#00ffff">
+<input type = "button" style = "width:75" value = "Click"
+onClick = "alert('Wow, it works!')">
+</td>
+</tr>
+</table>
+<p>
+
+Where to insert the new row:
+<input type = "text" name = "InsertRowNumber" value = "">
+<input type = "button" value = "Add Row" onClick =
+"InsertRow(document.MyForm.InsertRowNumber.value)" >
+</form>
+</body>
+</html>
